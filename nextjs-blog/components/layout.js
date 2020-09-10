@@ -1,12 +1,32 @@
-import Head from 'next/head'
-import styles from './layout.module.css'
-import utilStyles from '../styles/utils.module.css'
-import Link from 'next/link'
+import React, { useEffect } from "react";
+import * as typeformEmbed from "@typeform/embed";
+import { ReactTypeformEmbed } from 'react-typeform-embed';
 
-const name = 'Ako Pako'
-export const siteTitle = 'Next.js Sample Website'
+import Head from "next/head";
+import styles from "./layout.module.css";
+import utilStyles from "../styles/utils.module.css";
+import Link from "next/link";
+
+const name = "Ako Pako";
+export const siteTitle = "Next.js Sample Website";
 
 export default function Layout({ children, home }) {
+  useEffect(() => {
+    const el = document.getElementById('bt-popup')
+    const popup1 = typeformEmbed.makeWidget(el,
+      "https://akakimikaia.typeform.com/to/h7YjAP5I",
+      {
+        mode: "popup",
+        autoclose: 3000,
+        hideHeaders: true,
+        hideFooters: true,
+        onSubmit: function () {
+          console.log("submitted");
+        },
+      }
+    );
+    // document.getElementById('bt-popup').addEventListener('click', () => popup1.open())
+  });
   return (
     <div className={styles.container}>
       <Head>
@@ -54,6 +74,9 @@ export default function Layout({ children, home }) {
         )}
       </header>
       <main>{children}</main>
+      <div>
+        <button id="bt-popup" className="my-button">Popup</button>
+      </div>
       {!home && (
         <div className={styles.backToHome}>
           <Link href="/">
@@ -62,5 +85,5 @@ export default function Layout({ children, home }) {
         </div>
       )}
     </div>
-  )
+  );
 }
